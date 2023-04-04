@@ -32,6 +32,11 @@ const Navbar = () => {
     setIsOpen((prev) => !prev);
   };
 
+  // Making Input field empty
+  const ClearInput = () => {
+    setSearchInput("");
+  };
+
   useEffect(() => {
     const getData = async () => {
       if (searchInput !== "") {
@@ -96,13 +101,14 @@ const Navbar = () => {
             x: "0%",
             opacity: 1,
           }}
-          className={`menu absolute bg-[#34353e] bg-opacity-10 backdrop-blur-sm shadow-sm right-0 top-0 w-1/2 h-screen  z-20 px-2 pt-24 ${
+          className={`menu absolute bg-[#34353e] bg-opacity-70 backdrop-blur-sm shadow-sm right-0 top-0 w-1/2 h-screen  z-20 px-2 pt-24 ${
             !isOpen ? "hidden" : ""
           } md:hidden`}
         >
           <NavList
+            OnClick={toggleMenu}
             classes={{
-              className: "text-white flex flex-col gap-2",
+              className: "text-white flex flex-col gap-2 px-4",
             }}
           />
 
@@ -145,9 +151,12 @@ const Navbar = () => {
                 {!isLoading &&
                   searchData.length > 0 &&
                   searchData.map((m, index) => (
-                    <Link to={`/movies/${m.slug.current}`}>
+                    <Link
+                      key={index}
+                      onClick={ClearInput}
+                      to={`/movies/${m.slug.current}`}
+                    >
                       <li
-                        key={index}
                         className={`p-2 ${
                           searchData.length <= 1
                             ? ""

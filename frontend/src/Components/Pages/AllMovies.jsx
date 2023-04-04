@@ -9,7 +9,7 @@ const AllMovies = () => {
   return (
     <section className="px-8 md:px-16 mt-8 md:mt-12">
       <h1 className="text-white text-2xl md:text-4xl py-4">All Movies</h1>
-      <div className="all-movies flex gap-8 flex-wrap mt-8">
+      <div className="all-movies flex items-center justify-center md:justify-start  gap-6 md:gap-8 flex-wrap mt-8">
         <Suspense fallback={<MovieLoading />}>
           <Await resolve={Allmovies}>
             {(movies) =>
