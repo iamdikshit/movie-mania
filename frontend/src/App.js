@@ -86,6 +86,10 @@ function App() {
         console.log(err);
       });
   }, [dispatch]);
+
+  console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+  console.log(process.env.REACT_APP_SANITY_TOKEN);
+
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <RouterProvider router={router} />
