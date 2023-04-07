@@ -122,7 +122,7 @@ const Navbar = () => {
 
         {/* Desktop view */}
 
-        <div className="menu hidden md:block">
+        <div className="menu-list hidden md:block">
           <NavList
             classes={{
               className: "text-white flex gap-8 uppercase",
