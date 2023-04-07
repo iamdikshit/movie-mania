@@ -3,15 +3,15 @@ import Card from "../Card/Card";
 import MovieLayout from "./MovieLayout";
 import MovieList from "./MovieList";
 import { Link } from "react-router-dom";
-import { urlFor } from "../SanityConfig/client";
+import { urlFor } from "../../SanityConfig/client";
 
-const Movies = (props) => {
+const SearchResult = (props) => {
   const [width, setWidth] = useState(0);
   const carousel = useRef();
-
+  console.log(props.movies[0].slug.current);
+  //   console.log(carousel.current && carousel.current.scrollWidth);
   useEffect(() => {
-    // console.log(carousel.current);
-    if (carousel.current) {
+    if (!carousel.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
     }
   }, []);
@@ -37,4 +37,4 @@ const Movies = (props) => {
   );
 };
 
-export default Movies;
+export default SearchResult;

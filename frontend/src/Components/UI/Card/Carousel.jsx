@@ -1,6 +1,6 @@
 import React from "react";
 import { IoArrowBackCircle, IoArrowForwardCircle } from "react-icons/io5";
-import { urlFor } from "../SanityConfig/client";
+import { urlFor } from "../../SanityConfig/client";
 import { Link } from "react-router-dom";
 
 const Carousel = ({ data, currentIndex, OnClickNext, OnClickPrev }) => {
@@ -34,7 +34,7 @@ const Carousel = ({ data, currentIndex, OnClickNext, OnClickPrev }) => {
             <p className="text-sm  text-white hidden md:block">
               <i>{d.movie.overview[0].children[0].text.substr(0, 150)}...</i>
             </p>
-            <Link to={`/movies/${d.movie.slug.current}`}>
+            <Link to={`/screening/${d.movie.slug.current}`}>
               <button className="px-4 py-2 bg-gradient-to-r from-pink-600 to-red-600 rounded-full text-white text-xs md:text-lg shadow-xl mt-4">
                 Explore
               </button>

@@ -9,6 +9,14 @@ import { loader as AllMoviesLoader } from "./Components/Pages/AllMovies";
 import About from "./Components/Pages/About";
 import Contact from "./Components/Pages/Contact";
 import { loader as DetailMovie } from "./Components/Pages/MovieDetails";
+import Screening from "./Components/Pages/Screening";
+import { loader as screeningLoader } from "./Components/Pages/Screening";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import { useEffect } from "react";
+import { client } from "./Components/SanityConfig/client";
+import { useDispatch } from "react-redux";
+import { loggedIn, addUser } from "./Components/Store/UserSlice";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +50,17 @@ const router = createBrowserRouter([
         path: "contact",
         element: <Contact />,
       },
+
+      {
+        path: "screening",
+        children: [
+          {
+            path: ":slug",
+            element: <Screening />,
+            loader: screeningLoader,
+          },
+        ],
+      },
     ],
   },
   // {
@@ -52,7 +71,26 @@ const router = createBrowserRouter([
   // },
 ]);
 function App() {
-  return <RouterProvider router={router} />;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    client
+      .fetch(`*[_type=="user" && token=="${token}"]`)
+      .then((res) => {
+        if (res.length === 1) {
+          dispatch(loggedIn());
+          dispatch(addUser(res[0]));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch]);
+  return (
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
+  );
 }
 
 export default App;

@@ -1,12 +1,12 @@
 import React, { Suspense } from "react";
 
-import Movies from "../movieLayout/Movies";
+import Movies from "../UI/movieLayout/Movies";
 
 import { defer } from "react-router-dom";
 import { client } from "../SanityConfig/client";
 import { useLoaderData, Await } from "react-router-dom";
-import MovieLoading from "../Loading/MovieLoading";
-import Hero from "../Hero/Hero";
+import MovieLoading from "../UI/Loading/MovieLoading";
+import Hero from "../UI/Hero/Hero";
 const Home = () => {
   const { latestMovies, PopularMovies } = useLoaderData();
 

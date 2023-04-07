@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { client } from "../SanityConfig/client";
+import { client } from "../../SanityConfig/client";
 import CarouselLoading from "../Loading/CarouselLoading";
 import Carousel from "../Card/Carousel";
 // import { motion } from "framer-motion";
@@ -10,7 +10,7 @@ const Hero = () => {
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
-      const query = `*[_type=="screening"]{
+      const query = `*[_type=="screening" && published == true]{
         title,
           location,
           beginAt,

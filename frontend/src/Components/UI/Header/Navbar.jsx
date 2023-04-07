@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { client } from "../SanityConfig/client";
-import { images } from "../../assets";
+import { client } from "../../SanityConfig/client";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   IoMenuOutline,
   IoCloseOutline,
@@ -10,21 +9,28 @@ import {
 } from "react-icons/io5";
 import { motion } from "framer-motion";
 import NavList from "./NavList";
-import { addMovies, toggleLoading } from "../Store/SearchSlice";
+import { addMovies, toggleLoading } from "../../Store/SearchSlice";
+import { loggedIn, loggedOut, addUser } from "../../Store/UserSlice";
 import { useSelector } from "react-redux";
 import SearchLoading from "../Loading/SearchLoading";
+import { useGoogleLogin } from "@react-oauth/google";
+
+import axios from "axios";
+
+import GoogleBtn from "./GoogleBtn";
+import { UserHeader } from "./UserHeader";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const isLoading = useSelector((state) => state.search.isLoading);
   const searchData = useSelector((state) => state.search.movies);
+  const { isLoggedIn, user } = useSelector((state) => state.user);
 
   //************************* */
   const [isOpen, setIsOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [noData, setNodata] = useState(false);
-
   const getSearchInputData = (e) => {
     setSearchInput(e.target.value);
   };
@@ -66,16 +72,54 @@ const Navbar = () => {
     };
   }, [searchInput, dispatch]);
 
+  // Google Login
+
+  const login = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          }
+        );
+
+        localStorage.setItem("token", respose.access_token);
+        const userData = {
+          _id: res.data.sub,
+          _type: "user",
+          name: res.data.name,
+          email: res.data.email,
+          image: res.data.picture,
+          token: respose.access_token,
+        };
+
+        client
+          .createIfNotExists(userData)
+          .then((response) => {
+            dispatch(loggedIn());
+            dispatch(addUser(userData));
+            navigate(`${window.location.pathname}`);
+          })
+          .catch((error) => {
+            console.error("Error creating or replacing user:", error);
+          });
+      } catch (err) {
+        dispatch(loggedOut());
+        console.log(err);
+      }
+    },
+  });
+
   return (
-    <header className=" w-full bg-transparent px-8 md:px-16 flex flex-col justify-center pt-8 z-10">
+    <header className=" relative w-full bg-transparent px-8 md:px-16 flex flex-col justify-center pt-8 z-10">
       <nav className="flex items-center justify-between">
-        <div className="user-info flex items-start gap-2">
-          <img className="w-8 h-8 shadow-lg" src={images.avatar} alt="user" />
-          <div>
-            <h1 className="text-xs text-white">Welcome Dikshit👋</h1>
-            <h1 className="text-sm text-white">Lets relax get your movies!</h1>
-          </div>
-        </div>
+        {isLoggedIn && <UserHeader image={user?.image} name={user?.name} />}
+
+        {!isLoggedIn && <GoogleBtn OnClick={login} />}
+
         {/* Desktop view */}
 
         <div className="menu hidden md:block">
@@ -101,7 +145,7 @@ const Navbar = () => {
             x: "0%",
             opacity: 1,
           }}
-          className={`menu absolute bg-[#34353e] bg-opacity-70 backdrop-blur-sm shadow-sm right-0 top-0 w-1/2 h-screen  z-20 px-2 pt-24 ${
+          className={`menu absolute  bg-[#34353e] bg-opacity-70 backdrop-blur-sm shadow-sm right-0 top-0 w-1/2 h-screen  z-20 px-2 pt-24 ${
             !isOpen ? "hidden" : ""
           } md:hidden`}
         >

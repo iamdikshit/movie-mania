@@ -1,5 +1,5 @@
 import React from "react";
-import { images } from "../../assets";
+import { images } from "../../../assets";
 const Footer = () => {
   return (
     <footer className="px-8  bottom-0 md:px-16 pt-16 pb-4 flex items-center justify-between gap-4">

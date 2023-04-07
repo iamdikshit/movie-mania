@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import { Link } from "react-router-dom";
-import Card from "../Card/Card";
+import Card from "../UI/Card/Card";
 import { client, urlFor } from "../SanityConfig/client";
 import { useLoaderData, Await } from "react-router-dom";
-import MovieLoading from "../Loading/MovieLoading";
+import MovieLoading from "../UI/Loading/MovieLoading";
 const AllMovies = () => {
   const Allmovies = useLoaderData();
   return (

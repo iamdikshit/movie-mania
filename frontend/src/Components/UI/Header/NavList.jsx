@@ -2,7 +2,16 @@ import React from "react";
 
 import { NavLink } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import { loggedOut } from "../../Store/UserSlice";
 const NavList = (props) => {
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    localStorage.setItem("token", "");
+    dispatch(loggedOut());
+    props.OnClick();
+  };
   return (
     <ul {...props.classes}>
       <NavLink
@@ -42,6 +51,15 @@ const NavList = (props) => {
       >
         <li className="cursor-pointer">Contact</li>
       </NavLink>
+
+      {isLoggedIn && (
+        <li
+          onClick={logoutHandler}
+          className="cursor-pointer text-lg hover:text-blue-500"
+        >
+          Logout
+        </li>
+      )}
     </ul>
   );
 };

@@ -100,16 +100,16 @@ const Contact = () => {
                 type="submit"
                 className="
                 w-full
+                text-xs
+                text-white
                 px-6
                 py-2.5
-                bg-gradient-to-r from-pink-600 to-red-600
-                text-white
                 font-medium
-                text-xs
                 leading-tight
                 uppercase
                 rounded
                 shadow-md
+                bg-gradient-to-r from-pink-600 to-red-600
                 hover:bg-gradient-to-r
                 hover:from-pink-800
                 hover:to-red-800
