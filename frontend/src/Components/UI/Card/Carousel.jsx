@@ -2,10 +2,24 @@ import React from "react";
 import { IoArrowBackCircle, IoArrowForwardCircle } from "react-icons/io5";
 import { urlFor } from "../../SanityConfig/client";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Carousel = ({ data, currentIndex, OnClickNext, OnClickPrev }) => {
   return (
-    <div className="slider mx-auto relative  max-w-full h-72 md:h-96   overflow-x-hidden  ">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: -100,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        delay: 1,
+      }}
+      className="slider mx-auto relative  max-w-full h-72 md:h-96   overflow-x-hidden  "
+    >
       {data.map((d, index) => (
         <div
           style={{
@@ -62,7 +76,7 @@ const Carousel = ({ data, currentIndex, OnClickNext, OnClickPrev }) => {
         <IoArrowForwardCircle className="w-8 h-8  text-gray-400 opacity-60" />
       </button>
       <div className="dots"></div>
-    </div>
+    </motion.div>
   );
 };
 

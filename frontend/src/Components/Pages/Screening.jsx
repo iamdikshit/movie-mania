@@ -8,7 +8,9 @@ import { IoCalendarClear, IoFilm, IoArrowForward } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
 import { loggedIn, loggedOut, addUser } from "../Store/UserSlice";
+import { motion } from "framer-motion";
 import axios from "axios";
+
 const Screening = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,8 +100,28 @@ const Screening = () => {
                 />
               </MovieDetailLayout>
               {/* Venu map and other details  */}
-              <div className="venu  my-8 grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-5">
-                <div className="map  md:col-span-3">
+
+              <div className="mt-8">
+                <h1 className="pt-4 text-base md:text-2xl">Venue</h1>
+                <p className="pb-4 text-xm">
+                  Note: we are working on this feature
+                </p>
+              </div>
+              <div className="venu  grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-5">
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    x: -100,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  transition={{
+                    delay: 1,
+                  }}
+                  className="map  md:col-span-3"
+                >
                   <iframe
                     className=" w-full h-96  md:h-full"
                     title="myFrame"
@@ -107,8 +129,19 @@ const Screening = () => {
                     style={{ border: 0 }}
                     loading="lazy"
                   />
-                </div>
-                <div
+                </motion.div>
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    x: 100,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  transition={{
+                    delay: 1,
+                  }}
                   className={`other-details relative bg-slate-800 md:col-span-2 p-4 md:p-8 `}
                 >
                   <div className="other-detail">
@@ -186,7 +219,7 @@ const Screening = () => {
                       Login
                     </button>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </section>
           )}

@@ -1,8 +1,21 @@
 import React from "react";
-
+import { motion } from "framer-motion";
 const MovieDetailLayout = (props) => {
   return (
-    <div className="mx-auto bg-slate-800 rounded-lg  p-2 md:py-8 grid grid-cols-1 md:grid-cols-3 gap-2  ">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: -100,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        delay: 1,
+      }}
+      className="mx-auto bg-slate-800 rounded-lg  p-2 md:py-8 grid grid-cols-1 md:grid-cols-3 gap-2  "
+    >
       <div className="poster container mx-auto  w-full md:w-72 h-96  overflow-hidden  ">
         <img
           className="w-full h-full object-cover  rounded-lg"
@@ -30,7 +43,7 @@ const MovieDetailLayout = (props) => {
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

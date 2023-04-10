@@ -1,10 +1,73 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { client } from "../SanityConfig/client";
+import { v4 as uuidv4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { motion } from "framer-motion";
 const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const notify = () => toast("We will contact you soon!");
+  const nameHandler = (event) => {
+    setName(event.target.value);
+  };
+
+  const emailHandler = (event) => {
+    setEmail(event.target.value);
+  };
+  const messageHandler = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const formHandler = async (event) => {
+    event.preventDefault();
+    setSending(true);
+    const newId = uuidv4();
+    const contactData = {
+      _id: newId,
+      _type: "contact",
+      name: name,
+      email: email,
+      message: message,
+    };
+    setEmail("");
+    setName("");
+    setMessage("");
+
+    client
+      .createIfNotExists(contactData)
+      .then((response) => {
+        setSending(false);
+        notify();
+      })
+      .catch((error) => {
+        console.error("Error creating or replacing user:", error);
+      });
+
+    setSending(false);
+  };
+
   return (
     <div className="container mt-24 px-6 mx-auto">
+      <ToastContainer />
       <section className="mb-32 text-white">
-        <div className="flex flex-wrap bg-slate-800 p-4 py-16">
+        <motion.div
+          initial={{
+            opacity: 0,
+            scale: 0.5,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
+          transition={{
+            delay: 2,
+          }}
+          className="flex flex-wrap bg-slate-800 p-4 py-16"
+        >
           <div className="grow-0 shrink-0  basis-auto mb-6 md:mb-0 w-full md:w-6/12 px-3 lg:px-6">
             <h2 className="text-3xl font-bold mb-6">Contact us</h2>
             <p className="text-white mb-6">
@@ -16,9 +79,10 @@ const Contact = () => {
             <p className="text-white mb-2">dikshit.b.122@gmail.com</p>
           </div>
           <div className="grow-0 shrink-0 basis-auto mb-12 md:mb-0 w-full md:w-6/12 px-3 lg:px-6">
-            <form>
+            <form onSubmit={formHandler}>
               <div className="form-group mb-6">
                 <input
+                  onChange={nameHandler}
                   type="text"
                   className="form-control block
                   w-full
@@ -36,10 +100,14 @@ const Contact = () => {
                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="exampleInput7"
                   placeholder="Name"
+                  value={name}
+                  required
                 />
               </div>
               <div className="form-group mb-6">
                 <input
+                  onChange={emailHandler}
+                  value={email}
                   type="email"
                   className="form-control block
                   w-full
@@ -57,10 +125,14 @@ const Contact = () => {
                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="exampleInput8"
                   placeholder="Email address"
+                  required
                 />
               </div>
               <div className="form-group mb-6">
                 <textarea
+                  required
+                  onChange={messageHandler}
+                  value={message}
                   className="
                   form-control
                   block
@@ -83,19 +155,7 @@ const Contact = () => {
                   placeholder="Message"
                 ></textarea>
               </div>
-              <div className="form-group form-check text-center mb-6">
-                <input
-                  type="checkbox"
-                  className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-pink-600 checked:border-pink-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain mr-2 cursor-pointer"
-                  id="exampleCheck87"
-                />
-                <label
-                  className="form-check-label inline-block text-white"
-                  htmlFor="exampleCheck87"
-                >
-                  Send me a copy of this message
-                </label>
-              </div>
+
               <button
                 type="submit"
                 className="
@@ -115,13 +175,15 @@ const Contact = () => {
                 hover:to-red-800
                 transition
                 duration-300
-                ease-in-out"
+                ease-in-out
+               
+                "
               >
-                Send
+                {sending ? "Sending..." : "Send"}
               </button>
             </form>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
