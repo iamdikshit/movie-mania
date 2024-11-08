@@ -8,9 +8,14 @@ const Footer = () => {
       </div>
       <div className="footer-content">
         <h1 className="text-slate-200 text-sm">
-          © 2023 MovieMania. All rights reserved.
+          © 2024 MovieMania. All rights reserved.
         </h1>
-        <h1 className="text-slate-200 text-xs">Developed by iamdikshit</h1>
+        <h1 className="text-slate-200 text-xs">
+          Developed by{" "}
+          <a href="https://www.yesonance.com/" target="_top">
+            Yesonance
+          </a>
+        </h1>
       </div>
     </footer>
   );
